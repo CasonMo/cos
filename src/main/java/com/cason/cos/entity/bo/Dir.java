@@ -27,4 +27,12 @@ public class Dir {
     private String name;
     @Column(name = "p_id",length = 11)
     private Integer pid;
+    @Column(name="current_flag")
+    private Boolean currentFlag;
+
+    public Dir(int id, String name, int pid) {
+        this.setId(id);
+        this.setName(name);
+        this.setPid(pid);
+    }
 }

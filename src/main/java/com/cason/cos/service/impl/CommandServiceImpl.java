@@ -1,12 +1,10 @@
 package com.cason.cos.service.impl;
 
 import com.cason.cos.entity.bo.Dir;
-import com.cason.cos.entity.bo.Tree;
-import com.cason.cos.holder.CurrentDirHolder;
+
 import com.cason.cos.repository.DirRepository;
 import com.cason.cos.service.CommandService;
-import com.cason.cos.service.base.BaseService;
-import net.bytebuddy.implementation.bytecode.Throw;
+import com.cason.cos.service.DirService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +22,12 @@ public class CommandServiceImpl implements CommandService {
 
     @Autowired
     DirRepository dirRepository;
+    @Autowired
+    DirService dirService;
     @Override
     public Dir cd(String path) throws Exception {
         Dir tempDir =null;
-        Dir currentDir = CurrentDirHolder.getDir();
+        Dir currentDir = dirService.getCurrentDir();
         if ("..".equals(path)) {
             Integer pId = currentDir.getPid();
             if(pId==1){
@@ -39,7 +39,7 @@ public class CommandServiceImpl implements CommandService {
             String[] splitPath = path.split("/");
 
             if (path.startsWith("/")) {
-                tempDir = getDirInPath(splitPath, new Dir(0,"/",0), 1);
+                tempDir = getDirInPath(splitPath, new Dir(0,"/",-1), 1);
             }else {
                 tempDir = getDirInPath(splitPath, currentDir, 0);
             }
@@ -49,7 +49,7 @@ public class CommandServiceImpl implements CommandService {
 
         }
         if(tempDir!=null){
-            CurrentDirHolder.setDir(tempDir);
+            dirService.setCurrentDir(tempDir.getId());
         }
 
         return tempDir;
@@ -57,7 +57,7 @@ public class CommandServiceImpl implements CommandService {
 
     @Override
     public Dir pwd() {
-        return CurrentDirHolder.getDir();
+        return dirService.getCurrentDir();
     }
     private Dir getDirInPath(String[] dirName,Dir dir,int index)  {
         if(index>dirName.length-1){

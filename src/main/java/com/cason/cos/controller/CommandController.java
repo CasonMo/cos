@@ -33,14 +33,17 @@ public class CommandController extends BaseController<CommandService> {
     @GetMapping("pwd")
     public Resp pwd(){
         Dir dir = this.service.pwd();
-        return Resp.success(getAbsolutePath("",dir));
+        return Resp.success(getAbsolutePath(dir.getName(),dir));
     }
 
     private String getAbsolutePath(String path,Dir dir){
         if(dir==null){
             return path;
         }
-        if(dir.getPid()==0){
+        if(dir.getPid()==-1 ){
+            return "/";
+        }
+        if(dir.getPid()==0 ){
             return "/"+path;
         }
         Dir tmpDir = dirRepository.findById(dir.getPid()).get();
