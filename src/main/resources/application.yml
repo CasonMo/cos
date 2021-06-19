@@ -1,0 +1,16 @@
+# Created by IntelliJ IDEA.
+# User: Cason mo
+# Date: 2021/6/19
+# Time: 19:33
+
+spring:
+  datasource:
+    url: jdbc:mysql://cason.work:810/cos?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false
+    username: root
+    password: cason@db
+  jpa:
+    database: MySQL
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
