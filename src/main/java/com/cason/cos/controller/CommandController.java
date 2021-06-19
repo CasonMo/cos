@@ -30,7 +30,7 @@ public class CommandController extends BaseController<CommandService> {
         } catch (Exception e) {
             return Resp.fail(e.getMessage());
         }
-        session.setAttribute("currentDirId",dir.getId());
+//        session.setAttribute("currentDirId",dir.getId());
 
         return Resp.success();
     }
