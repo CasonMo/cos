@@ -8,9 +8,6 @@ import com.cason.cos.service.DirService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.util.List;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Cason mo
@@ -57,6 +54,10 @@ public class CommandServiceImpl implements CommandService {
 
     @Override
     public Dir pwd() {
+//        if(currentDirId!=0){
+//            return dirRepository.findById(currentDirId).get();
+//        }
+//        return new Dir(0, "/", -1);
         return dirService.getCurrentDir();
     }
     private Dir getDirInPath(String[] dirName,Dir dir,int index)  {

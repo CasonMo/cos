@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,17 +22,22 @@ public class CommandController extends BaseController<CommandService> {
     @Autowired
     DirRepository dirRepository;
     @GetMapping("cd")
-    public Resp cd(@RequestParam("path") String path)  {
+    public Resp cd(HttpSession session, @RequestParam("path") String path)  {
+
         Dir dir = null;
         try {
             dir = this.service.cd(path);
         } catch (Exception e) {
             return Resp.fail(e.getMessage());
         }
+        session.setAttribute("currentDirId",dir.getId());
+
         return Resp.success();
     }
     @GetMapping("pwd")
-    public Resp pwd(){
+    public Resp pwd(HttpSession session){
+//        Integer currentDirId =  (Integer) session.getAttribute("currentDirId");
+//        Dir dir = this.service.pwd(currentDirId);
         Dir dir = this.service.pwd();
         return Resp.success(getAbsolutePath(dir.getName(),dir));
     }
